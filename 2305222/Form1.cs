@@ -126,7 +126,7 @@ namespace _2305222
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
         {
             dtTeamNumber.Clear();
-            sqlQuery = "select p.team_number from player p left join team t on p.team_id = t.team_id where t.team_name = '"+ dtPlayer.Rows[posisiIndex][4].ToString() + "' and p.team_number != "+ Convert.ToInt32(dtPlayer.Rows[posisiIndex][5].ToString()) + " order by 1";
+            sqlQuery = "select p.team_number from player p left join team t on p.team_id = t.team_id where t.team_name = '"+ cbTeam.Text + "' and p.team_number != "+ Convert.ToInt32(dtPlayer.Rows[posisiIndex][5].ToString()) + " order by 1";
             sqlCommand = new MySqlCommand(sqlQuery, sqlConnect);
             sqlAdapter = new MySqlDataAdapter(sqlCommand);
             sqlAdapter.Fill(dtTeamNumber);
