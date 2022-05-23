@@ -27,6 +27,8 @@ namespace _2305222
         DataTable dtTeamName = new DataTable();
         DataTable dtTeamNumber = new DataTable();
         DataTable dtCapt = new DataTable();
+        DataTable dtSaveNation = new DataTable();
+        DataTable dtSaveTeam = new DataTable();
         int posisiIndex;
         int cek = 0;
 
@@ -72,7 +74,17 @@ namespace _2305222
         {
             if (cek == 0)
             {
-                sqlQuery = "update player set player_name = '"+ tbName.Text +"', birthdate = '"+ dateBirth.Text +"' ,nationality_id = (select nationality_id from nationality where nation = '"+ cbNationality.Text +"'), team_id = (select team_id from team where team_name = '"+ cbTeam.Text +"'), team_number = '"+ nNumber.Text +"' where player_id = '"+ tbID.Text +"';";
+                sqlQuery = "select nationality_id from nationality where nation = '"+ cbNationality.SelectedText.ToString() +"';";
+                sqlCommand = new MySqlCommand(sqlQuery, sqlConnect);
+                sqlAdapter = new MySqlDataAdapter(sqlCommand);
+                sqlAdapter.Fill(dtSaveNation);
+                sqlQuery = "select team_id from team where team_name = '"+ cbTeam.SelectedText.ToString() +"';";
+                sqlCommand = new MySqlCommand(sqlQuery, sqlConnect);
+                sqlAdapter = new MySqlDataAdapter(sqlCommand);
+                sqlAdapter.Fill(dtSaveTeam);
+
+
+                sqlQuery = "update player set player_name = '"+ tbName.Text.ToString() +"', birthdate = '"+ dateBirth.Value.ToString("yyyMMdd") +"', nationality_id = '"+ dtSaveNation.Rows[0][0].ToString() +"', team_id = '"+ dtSaveTeam.Rows[0][0].ToString() +"', team_number = '"+ nNumber.Value.ToString() +"' where player_id = '"+ tbID.Text.ToString() +"';";
                 MessageBox.Show(sqlQuery);
                 sqlConnect.Open();
                 sqlCommand = new MySqlCommand(sqlQuery, sqlConnect);
@@ -80,7 +92,7 @@ namespace _2305222
                 sqlCommand.ExecuteNonQuery();
                 sqlConnect.Close();
 
-                sqlQuery = "select captain_id from team where team_name = '" + cbTeam.SelectedValue.ToString() + "';";
+                sqlQuery = "select captain_id from team where team_name = '" + cbTeam.SelectedText.ToString() + "';";
                 sqlAdapter = new MySqlDataAdapter(sqlCommand);
                 sqlAdapter.Fill(dtCapt);
                 if (dtCapt.Rows[0][0].ToString() == tbID.Text)
