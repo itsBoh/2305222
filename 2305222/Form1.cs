@@ -82,15 +82,12 @@ namespace _2305222
                 sqlCommand = new MySqlCommand(sqlQuery, sqlConnect);
                 sqlAdapter = new MySqlDataAdapter(sqlCommand);
                 sqlAdapter.Fill(dtSaveNation);
-                MessageBox.Show(dtSaveNation.Rows[0][0].ToString());
                 sqlQuery = "select team_id from team where team_name = '"+ cbTeam.Text +"';";
                 sqlCommand = new MySqlCommand(sqlQuery, sqlConnect);
                 sqlAdapter = new MySqlDataAdapter(sqlCommand);
                 sqlAdapter.Fill(dtSaveTeam);
-                MessageBox.Show(dtSaveTeam.Rows[0][0].ToString());
 
                 sqlQuery = "update player set player_name = '"+ tbName.Text.ToString() +"', birthdate = '"+ dateBirth.Value.ToString("yyyMMdd") +"', nationality_id = '"+ dtSaveNation.Rows[0][0].ToString() + "', team_id = '"+ dtSaveTeam.Rows[0][0].ToString() + "', team_number = '"+ nNumber.Value.ToString() +"' where player_id = '"+ tbID.Text.ToString() +"';";
-                MessageBox.Show(sqlQuery);
                 sqlConnect.Open();
                 sqlCommand = new MySqlCommand(sqlQuery, sqlConnect);
                 sqlAdapter = new MySqlDataAdapter(sqlCommand);
@@ -101,11 +98,10 @@ namespace _2305222
                 sqlCommand = new MySqlCommand(sqlQuery, sqlConnect);
                 sqlAdapter = new MySqlDataAdapter(sqlCommand);
                 sqlAdapter.Fill(dtCapt);
-                MessageBox.Show(dtCapt.Rows[0][0].ToString());
 
                 if (dtCapt.Rows[0][0].ToString() == tbID.Text)
                 {
-                    sqlQuery = "update team set captain_id = (select p.player_id from player p left join team t on p.team_id = t.team_id where t.team_name = '" + dtPlayer.Rows[posisiIndex][4].ToString() + "' order by p.birthdate;) where team_name = '" + dtPlayer.Rows[posisiIndex][4].ToString() + "'";
+                    sqlQuery = "update team set captain_id = (select p.player_id from player p left join team t on p.team_id = t.team_id where t.team_name = '" + tim + "' order by p.birthdate;) where team_name = '" + tim + "'";
                     sqlConnect.Open();
                     sqlCommand = new MySqlCommand(sqlQuery, sqlConnect);
                     sqlAdapter = new MySqlDataAdapter(sqlCommand);
